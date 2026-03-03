@@ -1377,15 +1377,33 @@ async function loadAppData() {
 
 async function init() {
     try {
+        // Check if this is a share link first
+        const params = new URLSearchParams(window.location.search);
+        const shareToken = params.get('share');
+        
+        if (shareToken) {
+            // For share links, show app shell without auth
+            document.getElementById('auth-view').style.display = 'none';
+            document.getElementById('app-shell').style.display = 'block';
+            // Hide header nav buttons for non-logged in users
+            const headerNav = document.querySelector('.navbar-center');
+            if (headerNav) headerNav.style.display = 'none';
+            await handleShareImport();
+            return;
+        }
+        
+        // Normal auth flow
         const user = await loadCurrentUser();
         if (user) {
             await loadAppData();
             showToast('App bereit!', 'success');
         }
-        await handleShareImport();
     } catch (error) {
         console.error('Initialization error:', error);
-        showToast('Fehler beim Laden der Daten', 'error');
+        // Don't show error toast if it's just a missing auth
+        if (error.message !== 'API-Fehler') {
+            showToast('Fehler beim Laden der Daten', 'error');
+        }
     }
 }
 

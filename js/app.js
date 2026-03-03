@@ -1636,12 +1636,13 @@ const installBtn = document.getElementById('install-btn');
 const installBtnMobile = document.getElementById('install-btn-mobile');
 const installBtnMobileWrapper = document.getElementById('install-btn-mobile-wrapper');
 const installBtnHero = document.getElementById('install-btn-hero');
+const installBtnFloating = document.getElementById('install-btn-floating');
 
 window.addEventListener('beforeinstallprompt', (event) => {
     event.preventDefault();
     deferredInstallPrompt = event;
     
-    // Show all install buttons (desktop, mobile, hero)
+    // Show all install buttons (desktop, mobile, hero, floating)
     if (installBtn) {
         installBtn.style.display = 'inline-flex';
     }
@@ -1650,6 +1651,9 @@ window.addEventListener('beforeinstallprompt', (event) => {
     }
     if (installBtnHero) {
         installBtnHero.style.display = 'inline-flex';
+    }
+    if (installBtnFloating) {
+        installBtnFloating.style.display = 'flex';
     }
 });
 
@@ -1671,6 +1675,9 @@ async function handleInstallClick() {
     if (installBtnHero) {
         installBtnHero.style.display = 'none';
     }
+    if (installBtnFloating) {
+        installBtnFloating.style.display = 'none';
+    }
     
     if (result.outcome === 'accepted') {
         showToast(t('appReady'), 'success');
@@ -1687,6 +1694,10 @@ if (installBtnMobile) {
 
 if (installBtnHero) {
     installBtnHero.addEventListener('click', handleInstallClick);
+}
+
+if (installBtnFloating) {
+    installBtnFloating.addEventListener('click', handleInstallClick);
 }
 
 if ('serviceWorker' in navigator) {

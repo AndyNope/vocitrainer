@@ -1614,25 +1614,45 @@ async function handleShareImport() {
 
 let deferredInstallPrompt = null;
 const installBtn = document.getElementById('install-btn');
+const installBtnMobile = document.getElementById('install-btn-mobile');
+const installBtnMobileWrapper = document.getElementById('install-btn-mobile-wrapper');
 
 window.addEventListener('beforeinstallprompt', (event) => {
     event.preventDefault();
     deferredInstallPrompt = event;
+    
+    // Show both desktop and mobile install buttons
     if (installBtn) {
         installBtn.style.display = 'inline-flex';
     }
+    if (installBtnMobileWrapper) {
+        installBtnMobileWrapper.style.display = 'block';
+    }
 });
 
-if (installBtn) {
-    installBtn.addEventListener('click', async () => {
-        if (!deferredInstallPrompt) {
-            return;
-        }
-        deferredInstallPrompt.prompt();
-        await deferredInstallPrompt.userChoice;
-        deferredInstallPrompt = null;
+async function handleInstallClick() {
+    if (!deferredInstallPrompt) {
+        return;
+    }
+    deferredInstallPrompt.prompt();
+    await deferredInstallPrompt.userChoice;
+    deferredInstallPrompt = null;
+    
+    // Hide both buttons after install
+    if (installBtn) {
         installBtn.style.display = 'none';
-    });
+    }
+    if (installBtnMobileWrapper) {
+        installBtnMobileWrapper.style.display = 'none';
+    }
+}
+
+if (installBtn) {
+    installBtn.addEventListener('click', handleInstallClick);
+}
+
+if (installBtnMobile) {
+    installBtnMobile.addEventListener('click', handleInstallClick);
 }
 
 if ('serviceWorker' in navigator) {

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Mail bestätigen – Voci Trainer</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .verify-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        .verify-card {
+            max-width: 520px;
+            width: 100%;
+            background: var(--surface);
+            border-radius: 1rem;
+            padding: 2.5rem;
+            box-shadow: var(--shadow-lg);
+            text-align: center;
+        }
+        .verify-card h2 {
+            margin-bottom: 0.5rem;
+        }
+        .verify-card p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+        .verify-status {
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="verify-container">
+        <div class="verify-card">
+            <h2>Bestätigung</h2>
+            <p>Wir prüfen deine E-Mail-Adresse.</p>
+            <div id="verify-status" class="verify-status">Bitte warten…</div>
+            <a href="index.html" class="btn btn-primary">Zur App</a>
+        </div>
+    </div>
+
+    <script>
+        async function verify() {
+            const params = new URLSearchParams(window.location.search);
+            const token = params.get('token');
+            const status = document.getElementById('verify-status');
+
+            if (!token) {
+                status.textContent = 'Token fehlt.';
+                return;
+            }
+
+            try {
+                const response = await fetch(`api/verify_email.php?token=${encodeURIComponent(token)}`);
+                const data = await response.json();
+
+                if (!response.ok) {
+                    status.textContent = data.error || 'Bestätigung fehlgeschlagen.';
+                    return;
+                }
+
+                if (data.already_verified) {
+                    status.textContent = 'E-Mail war bereits bestätigt.';
+                } else {
+                    status.textContent = 'E-Mail erfolgreich bestätigt!';
+                }
+            } catch (error) {
+                status.textContent = 'Bestätigung fehlgeschlagen.';
+            }
+        }
+
+        verify();
+    </script>
+</body>
+</html>

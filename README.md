@@ -1,18 +1,24 @@
 # 📚 Voci Trainer
 
-Eine moderne Webapp zum Lernen von Vokabeln mit verschiedenen Lernmodi.
+Eine moderne Progressive Web App (PWA) zum Lernen von Vokabeln mit Community-Features.
 
 ## ✨ Features
 
-- ✅ Voci-Sets mit verschiedenen Sprachen erstellen und verwalten
-- ✅ Hauptsprache individuell wählen
-- ✅ Zwei Lernmodi:
-  - **Typing-Modus**: Übersetzungen selbst eintippen
-  - **Lernkartei-Modus**: Karteikarten umdrehen und bewerten
-- ✅ Favoriten-System für wichtige Sets
-- ✅ Detaillierte Statistiken nach jedem Lerndurchgang
-- ✅ Responsives Design für Desktop und Mobile
-- ✅ Lernfortschritt wird automatisch gespeichert
+- ✅ **5 Lernmodi**: Typing, Speed, Flashcards, Quiz, Listening
+- ✅ **Community-Sets**: Teile Vokabel-Sets oder veröffentliche sie für alle
+- ✅ **PWA**: Installierbar auf Handy & Desktop, offline-fähig
+- ✅ **Share-Links**: Sets direkt teilen - lernbar ohne Login
+- ✅ **Voci-Sets** mit verschiedenen Sprachen erstellen und verwalten
+- ✅ **Lernfortschritt** wird automatisch gespeichert
+- ✅ **Responsives Design** für Desktop und Mobile
+- ✅ **Dark/Light Mode** (daisyUI)
+
+### 🎯 Lernmodi
+- **Typing-Modus**: Schreibe die Übersetzung
+- **Speed-Modus**: Schnelles Tippen gegen die Zeit
+- **Flashcard-Modus**: Klassische Karteikarten zum Umdrehen
+- **Quiz-Modus**: Multiple Choice Fragen
+- **Listening-Modus**: Hörverstehen mit Text-to-Speech
 
 ## 🚀 Installation
 

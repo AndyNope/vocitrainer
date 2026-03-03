@@ -1635,17 +1635,21 @@ let deferredInstallPrompt = null;
 const installBtn = document.getElementById('install-btn');
 const installBtnMobile = document.getElementById('install-btn-mobile');
 const installBtnMobileWrapper = document.getElementById('install-btn-mobile-wrapper');
+const installBtnHero = document.getElementById('install-btn-hero');
 
 window.addEventListener('beforeinstallprompt', (event) => {
     event.preventDefault();
     deferredInstallPrompt = event;
     
-    // Show both desktop and mobile install buttons
+    // Show all install buttons (desktop, mobile, hero)
     if (installBtn) {
         installBtn.style.display = 'inline-flex';
     }
     if (installBtnMobileWrapper) {
         installBtnMobileWrapper.style.display = 'block';
+    }
+    if (installBtnHero) {
+        installBtnHero.style.display = 'inline-flex';
     }
 });
 
@@ -1654,15 +1658,22 @@ async function handleInstallClick() {
         return;
     }
     deferredInstallPrompt.prompt();
-    await deferredInstallPrompt.userChoice;
+    const result = await deferredInstallPrompt.userChoice;
     deferredInstallPrompt = null;
     
-    // Hide both buttons after install
+    // Hide all buttons after install
     if (installBtn) {
         installBtn.style.display = 'none';
     }
     if (installBtnMobileWrapper) {
         installBtnMobileWrapper.style.display = 'none';
+    }
+    if (installBtnHero) {
+        installBtnHero.style.display = 'none';
+    }
+    
+    if (result.outcome === 'accepted') {
+        showToast(t('appReady'), 'success');
     }
 }
 
@@ -1672,6 +1683,10 @@ if (installBtn) {
 
 if (installBtnMobile) {
     installBtnMobile.addEventListener('click', handleInstallClick);
+}
+
+if (installBtnHero) {
+    installBtnHero.addEventListener('click', handleInstallClick);
 }
 
 if ('serviceWorker' in navigator) {

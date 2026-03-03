@@ -21,62 +21,248 @@
 </head>
 <body class="bg-base-200 text-base-content">
     <!-- Auth View -->
-    <div id="auth-view" class="min-h-screen flex items-center justify-center p-6">
-        <div class="card w-full max-w-xl bg-base-100 shadow-xl border border-base-300">
-            <div class="card-body">
-                <div class="text-center space-y-3">
-                    <div class="flex items-center justify-center gap-2 text-primary">
-                        <i class="fa-solid fa-book text-2xl"></i>
-                        <span class="text-2xl font-bold">Voci Trainer</span>
+    <div id="auth-view" class="min-h-screen">
+        <!-- Landing Page (nur im Browser, nicht in PWA) -->
+        <div id="landing-page" class="hidden">
+            <!-- Hero Section -->
+            <div class="hero min-h-[60vh] bg-gradient-to-br from-primary to-secondary">
+                <div class="hero-content text-center text-primary-content">
+                    <div class="max-w-3xl">
+                        <div class="flex items-center justify-center gap-3 mb-6">
+                            <i class="fa-solid fa-book text-6xl"></i>
+                        </div>
+                        <h1 class="text-5xl md:text-6xl font-bold mb-6">Voci Trainer</h1>
+                        <p class="text-xl md:text-2xl mb-8 opacity-90">
+                            Lerne Vokabeln effektiv mit 5 verschiedenen Lernmodi. Erstelle eigene Sets oder nutze Community-Inhalte.
+                        </p>
+                        <div class="flex flex-wrap gap-4 justify-center">
+                            <a href="#auth-section" class="btn btn-lg btn-neutral">
+                                <i class="fa-solid fa-right-to-bracket mr-2"></i>
+                                Jetzt starten
+                            </a>
+                            <a href="#features-section" class="btn btn-lg btn-outline btn-neutral">
+                                <i class="fa-solid fa-circle-info mr-2"></i>
+                                Mehr erfahren
+                            </a>
+                        </div>
                     </div>
-                    <h2 class="text-3xl font-bold">Willkommen zurück</h2>
-                    <p class="text-base-content/70">Melde dich an oder registriere dich, um deine eigenen Voci zu speichern.</p>
                 </div>
+            </div>
 
-                <div class="tabs tabs-lifted w-full mt-6 auth-tabs-modern">
-                    <button type="button" class="tab tab-active auth-tab w-full text-base" data-auth-tab="login">Anmelden</button>
-                    <button type="button" class="tab auth-tab w-full text-base" data-auth-tab="register">Registrieren</button>
+            <!-- Features Section -->
+            <div id="features-section" class="container mx-auto px-4 py-16">
+                <h2 class="text-4xl font-bold text-center mb-12">Funktionen</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="card bg-base-100 shadow-xl border border-base-300">
+                        <div class="card-body">
+                            <div class="text-primary text-3xl mb-3">
+                                <i class="fa-solid fa-gamepad"></i>
+                            </div>
+                            <h3 class="card-title">5 Lernmodi</h3>
+                            <p>Karteikarten, Multiple Choice, Schreibmodus, Zuordnen und Hörmodus für abwechslungsreiches Lernen.</p>
+                        </div>
+                    </div>
+
+                    <div class="card bg-base-100 shadow-xl border border-base-300">
+                        <div class="card-body">
+                            <div class="text-primary text-3xl mb-3">
+                                <i class="fa-solid fa-users"></i>
+                            </div>
+                            <h3 class="card-title">Community Sets</h3>
+                            <p>Greife auf geteilte Vokabelsets zu oder teile deine eigenen Sets mit der Community.</p>
+                        </div>
+                    </div>
+
+                    <div class="card bg-base-100 shadow-xl border border-base-300">
+                        <div class="card-body">
+                            <div class="text-primary text-3xl mb-3">
+                                <i class="fa-solid fa-chart-line"></i>
+                            </div>
+                            <h3 class="card-title">Fortschritt tracken</h3>
+                            <p>Verfolge deinen Lernfortschritt und sieh welche Vokabeln du schon beherrschst.</p>
+                        </div>
+                    </div>
+
+                    <div class="card bg-base-100 shadow-xl border border-base-300">
+                        <div class="card-body">
+                            <div class="text-primary text-3xl mb-3">
+                                <i class="fa-solid fa-language"></i>
+                            </div>
+                            <h3 class="card-title">Alle Sprachen</h3>
+                            <p>Lerne beliebige Sprachen - von Englisch und Französisch bis Japanisch und Arabisch.</p>
+                        </div>
+                    </div>
+
+                    <div class="card bg-base-100 shadow-xl border border-base-300">
+                        <div class="card-body">
+                            <div class="text-primary text-3xl mb-3">
+                                <i class="fa-solid fa-mobile-screen"></i>
+                            </div>
+                            <h3 class="card-title">PWA</h3>
+                            <p>Installiere die App auf deinem Gerät und lerne auch offline weiter.</p>
+                        </div>
+                    </div>
+
+                    <div class="card bg-base-100 shadow-xl border border-base-300">
+                        <div class="card-body">
+                            <div class="text-primary text-3xl mb-3">
+                                <i class="fa-solid fa-volume-up"></i>
+                            </div>
+                            <h3 class="card-title">Audio Support</h3>
+                            <p>Hör dir Vokabeln mit Text-to-Speech an und verbessere deine Aussprache.</p>
+                        </div>
+                    </div>
                 </div>
+            </div>
 
-                <form id="login-form" class="space-y-4 mt-6 auth-form">
-                    <div class="form-control">
-                        <label class="label" for="login-email">
-                            <span class="label-text">E-Mail</span>
-                        </label>
-                        <input type="email" id="login-email" class="input input-bordered w-full" required>
+            <!-- Community Preview Section -->
+            <div class="bg-base-300 py-16">
+                <div class="container mx-auto px-4">
+                    <h2 class="text-4xl font-bold text-center mb-4">Beliebte Community Sets</h2>
+                    <p class="text-center text-base-content/70 mb-12 max-w-2xl mx-auto">
+                        Starte direkt mit professionell erstellten C1 Vokabelsets basierend auf "Compact Advanced"
+                    </p>
+                    <div id="community-preview" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <!-- Wird dynamisch geladen -->
+                        <div class="flex justify-center col-span-full">
+                            <span class="loading loading-spinner loading-lg text-primary"></span>
+                        </div>
                     </div>
-                    <div class="form-control">
-                        <label class="label" for="login-password">
-                            <span class="label-text">Passwort</span>
-                        </label>
-                        <input type="password" id="login-password" class="input input-bordered w-full" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary w-full">Anmelden</button>
-                    <div class="text-center text-sm text-base-content/60">Tippe oben auf Registrieren, wenn du neu bist.</div>
-                </form>
+                </div>
+            </div>
 
-                <form id="register-form" class="space-y-4 mt-6 auth-form" style="display: none;">
-                    <div class="form-control">
-                        <label class="label" for="register-name">
-                            <span class="label-text">Name</span>
-                        </label>
-                        <input type="text" id="register-name" class="input input-bordered w-full" required>
+            <!-- Auth Section -->
+            <div id="auth-section" class="container mx-auto px-4 py-16">
+                <div class="flex items-center justify-center">
+                    <div class="card w-full max-w-xl bg-base-100 shadow-xl border border-base-300">
+                        <div class="card-body">
+                            <div class="text-center space-y-3">
+                                <div class="flex items-center justify-center gap-2 text-primary">
+                                    <i class="fa-solid fa-book text-2xl"></i>
+                                    <span class="text-2xl font-bold">Voci Trainer</span>
+                                </div>
+                                <h2 class="text-3xl font-bold">Kostenlos starten</h2>
+                                <p class="text-base-content/70">Melde dich an oder registriere dich, um deine eigenen Voci zu speichern.</p>
+                            </div>
+
+                            <div class="tabs tabs-lifted w-full mt-6 auth-tabs-modern">
+                                <button type="button" class="tab tab-active auth-tab w-full text-base" data-auth-tab="login">Anmelden</button>
+                                <button type="button" class="tab auth-tab w-full text-base" data-auth-tab="register">Registrieren</button>
+                            </div>
+
+                            <form id="login-form" class="space-y-4 mt-6 auth-form">
+                                <div class="form-control">
+                                    <label class="label" for="login-email">
+                                        <span class="label-text">E-Mail</span>
+                                    </label>
+                                    <input type="email" id="login-email" class="input input-bordered w-full" required>
+                                </div>
+                                <div class="form-control">
+                                    <label class="label" for="login-password">
+                                        <span class="label-text">Passwort</span>
+                                    </label>
+                                    <input type="password" id="login-password" class="input input-bordered w-full" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-full">Anmelden</button>
+                                <div class="text-center text-sm text-base-content/60">Tippe oben auf Registrieren, wenn du neu bist.</div>
+                            </form>
+
+                            <form id="register-form" class="space-y-4 mt-6 auth-form" style="display: none;">
+                                <div class="form-control">
+                                    <label class="label" for="register-name">
+                                        <span class="label-text">Name</span>
+                                    </label>
+                                    <input type="text" id="register-name" class="input input-bordered w-full" required>
+                                </div>
+                                <div class="form-control">
+                                    <label class="label" for="register-email">
+                                        <span class="label-text">E-Mail</span>
+                                    </label>
+                                    <input type="email" id="register-email" class="input input-bordered w-full" required>
+                                </div>
+                                <div class="form-control">
+                                    <label class="label" for="register-password">
+                                        <span class="label-text">Passwort</span>
+                                    </label>
+                                    <input type="password" id="register-password" class="input input-bordered w-full" required minlength="6">
+                                </div>
+                                <button type="submit" class="btn btn-primary w-full">Registrieren</button>
+                                <div class="text-center text-sm text-base-content/60">Nach der Registrierung erhältst du eine Bestätigungsmail.</div>
+                            </form>
+                        </div>
                     </div>
-                    <div class="form-control">
-                        <label class="label" for="register-email">
-                            <span class="label-text">E-Mail</span>
-                        </label>
-                        <input type="email" id="register-email" class="input input-bordered w-full" required>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <footer class="footer footer-center p-10 bg-base-300 text-base-content">
+                <div>
+                    <div class="flex items-center gap-2 text-primary">
+                        <i class="fa-solid fa-book text-xl"></i>
+                        <span class="text-xl font-bold">Voci Trainer</span>
                     </div>
-                    <div class="form-control">
-                        <label class="label" for="register-password">
-                            <span class="label-text">Passwort</span>
-                        </label>
-                        <input type="password" id="register-password" class="input input-bordered w-full" required minlength="6">
+                    <p class="font-semibold">Effektiv Vokabeln lernen</p>
+                    <p>Made with <i class="fa-solid fa-heart text-error"></i> by Andy</p>
+                </div>
+            </footer>
+        </div>
+
+        <!-- PWA Auth (nur Login-Box, keine Landing Page) -->
+        <div id="pwa-auth" class="hidden min-h-screen flex items-center justify-center p-6">
+            <div class="card w-full max-w-xl bg-base-100 shadow-xl border border-base-300">
+                <div class="card-body">
+                    <div class="text-center space-y-3">
+                        <div class="flex items-center justify-center gap-2 text-primary">
+                            <i class="fa-solid fa-book text-2xl"></i>
+                            <span class="text-2xl font-bold">Voci Trainer</span>
+                        </div>
+                        <h2 class="text-3xl font-bold">Willkommen zurück</h2>
+                        <p class="text-base-content/70">Melde dich an oder registriere dich.</p>
                     </div>
-                    <button type="submit" class="btn btn-primary w-full">Registrieren</button>
-                    <div class="text-center text-sm text-base-content/60">Nach der Registrierung erhältst du eine Bestätigungsmail.</div>
-                </form>
+
+                    <div class="tabs tabs-lifted w-full mt-6 auth-tabs-modern">
+                        <button type="button" class="tab tab-active auth-tab w-full text-base" data-auth-tab="login">Anmelden</button>
+                        <button type="button" class="tab auth-tab w-full text-base" data-auth-tab="register">Registrieren</button>
+                    </div>
+
+                    <form id="login-form-pwa" class="space-y-4 mt-6 auth-form">
+                        <div class="form-control">
+                            <label class="label" for="login-email-pwa">
+                                <span class="label-text">E-Mail</span>
+                            </label>
+                            <input type="email" id="login-email-pwa" class="input input-bordered w-full" required>
+                        </div>
+                        <div class="form-control">
+                            <label class="label" for="login-password-pwa">
+                                <span class="label-text">Passwort</span>
+                            </label>
+                            <input type="password" id="login-password-pwa" class="input input-bordered w-full" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-full">Anmelden</button>
+                    </form>
+
+                    <form id="register-form-pwa" class="space-y-4 mt-6 auth-form" style="display: none;">
+                        <div class="form-control">
+                            <label class="label" for="register-name-pwa">
+                                <span class="label-text">Name</span>
+                            </label>
+                            <input type="text" id="register-name-pwa" class="input input-bordered w-full" required>
+                        </div>
+                        <div class="form-control">
+                            <label class="label" for="register-email-pwa">
+                                <span class="label-text">E-Mail</span>
+                            </label>
+                            <input type="email" id="register-email-pwa" class="input input-bordered w-full" required>
+                        </div>
+                        <div class="form-control">
+                            <label class="label" for="register-password-pwa">
+                                <span class="label-text">Passwort</span>
+                            </label>
+                            <input type="password" id="register-password-pwa" class="input input-bordered w-full" required minlength="6">
+                        </div>
+                        <button type="submit" class="btn btn-primary w-full">Registrieren</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

@@ -116,9 +116,76 @@ function setAuthState(user) {
             mobileName.textContent = user.name;
         }
     } else {
-        authView.style.display = 'flex';
+        authView.style.display = 'block';
         appShell.style.display = 'none';
+        
+        // Check if running as PWA
+        const isPWA = window.matchMedia('(display-mode: standalone)').matches || 
+                      window.navigator.standalone === true;
+        
+        const landingPage = document.getElementById('landing-page');
+        const pwaAuth = document.getElementById('pwa-auth');
+        
+        if (isPWA) {
+            // PWA: Show only login box
+            landingPage.classList.add('hidden');
+            pwaAuth.classList.remove('hidden');
+        } else {
+            // Browser: Show full landing page
+            landingPage.classList.remove('hidden');
+            pwaAuth.classList.add('hidden');
+            loadCommunityPreview();
+        }
     }
+}
+
+async function loadCommunityPreview() {
+    try {
+        const data = await fetchAPI('share.php?list=1', { skipAuth: true });
+        const previewContainer = document.getElementById('community-preview');
+        
+        if (!data.sets || data.sets.length === 0) {
+            previewContainer.innerHTML = '<p class="col-span-full text-center text-base-content/60">Keine Community Sets verfügbar</p>';
+            return;
+        }
+        
+        // Show first 6 sets
+        const sets = data.sets.slice(0, 6);
+        previewContainer.innerHTML = sets.map(set => `
+            <div class="card bg-base-100 shadow-lg border border-base-300 hover:shadow-xl transition-shadow">
+                <div class="card-body">
+                    <h3 class="card-title text-lg">
+                        <i class="fa-solid fa-book-open text-primary"></i>
+                        ${escapeHtml(set.name)}
+                    </h3>
+                    <div class="flex items-center gap-2 text-sm text-base-content/60">
+                        <i class="fa-solid fa-language"></i>
+                        <span>${escapeHtml(set.language_name)}</span>
+                    </div>
+                    <div class="flex items-center gap-2 text-sm text-base-content/60">
+                        <i class="fa-solid fa-list"></i>
+                        <span>${set.vocab_count} Vokabeln</span>
+                    </div>
+                    <div class="card-actions justify-end mt-2">
+                        <a href="?share=${set.share_token}" class="btn btn-sm btn-primary">
+                            <i class="fa-solid fa-eye mr-1"></i>
+                            Anschauen
+                        </a>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    } catch (error) {
+        console.error('Failed to load community preview:', error);
+        document.getElementById('community-preview').innerHTML = 
+            '<p class="col-span-full text-center text-base-content/60">Fehler beim Laden der Community Sets</p>';
+    }
+}
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
 }
 
 async function loadCurrentUser() {
@@ -156,7 +223,27 @@ function updateLanguageSelects() {
 
 function getLanguageCodeById(id) {
     const language = state.languages.find(l => l.id == id);
-    return language ? language.code : null;
+    if (!language) return null;
+    
+    // Map to full locale codes for better TTS
+    const localeMap = {
+        'en': 'en-US',
+        'de': 'de-DE',
+        'fr': 'fr-FR',
+        'es': 'es-ES',
+        'it': 'it-IT',
+        'pt': 'pt-PT',
+        'nl': 'nl-NL',
+        'pl': 'pl-PL',
+        'ru': 'ru-RU',
+        'ja': 'ja-JP',
+        'zh': 'zh-CN',
+        'ar': 'ar-SA',
+        'tr': 'tr-TR',
+        'ko': 'ko-KR'
+    };
+    
+    return localeMap[language.code] || language.code;
 }
 
 function speakText(text, langCode = null) {
@@ -166,9 +253,26 @@ function speakText(text, langCode = null) {
     }
 
     const utterance = new SpeechSynthesisUtterance(text);
+    
     if (langCode) {
         utterance.lang = langCode;
+        
+        // Try to find a voice that matches the language
+        const voices = window.speechSynthesis.getVoices();
+        const matchingVoice = voices.find(voice => 
+            voice.lang.startsWith(langCode.substring(0, 2))
+        );
+        
+        if (matchingVoice) {
+            utterance.voice = matchingVoice;
+        }
     }
+    
+    // Better speech parameters
+    utterance.rate = 0.9; // Slightly slower for clarity
+    utterance.pitch = 1.0;
+    utterance.volume = 1.0;
+    
     window.speechSynthesis.cancel();
     window.speechSynthesis.speak(utterance);
 }
@@ -388,20 +492,29 @@ document.addEventListener('click', (event) => {
     const target = tab.dataset.authTab;
     const loginForm = document.getElementById('login-form');
     const registerForm = document.getElementById('register-form');
+    const loginFormPwa = document.getElementById('login-form-pwa');
+    const registerFormPwa = document.getElementById('register-form-pwa');
+    
     if (loginForm && registerForm) {
         loginForm.style.display = target === 'login' ? 'block' : 'none';
         registerForm.style.display = target === 'register' ? 'block' : 'none';
+    }
+    if (loginFormPwa && registerFormPwa) {
+        loginFormPwa.style.display = target === 'login' ? 'block' : 'none';
+        registerFormPwa.style.display = target === 'register' ? 'block' : 'none';
     }
 });
 
 document.addEventListener('submit', async (event) => {
     const form = event.target;
 
-    if (form.id === 'login-form') {
+    if (form.id === 'login-form' || form.id === 'login-form-pwa') {
         event.preventDefault();
 
-        const email = document.getElementById('login-email').value.trim();
-        const password = document.getElementById('login-password').value;
+        const emailField = form.querySelector('input[type="email"]');
+        const passwordField = form.querySelector('input[type="password"]');
+        const email = emailField.value.trim();
+        const password = passwordField.value;
 
         try {
             const data = await fetchAPI('auth.php', {
@@ -418,12 +531,15 @@ document.addEventListener('submit', async (event) => {
         }
     }
 
-    if (form.id === 'register-form') {
+    if (form.id === 'register-form' || form.id === 'register-form-pwa') {
         event.preventDefault();
 
-        const name = document.getElementById('register-name').value.trim();
-        const email = document.getElementById('register-email').value.trim();
-        const password = document.getElementById('register-password').value;
+        const nameField = form.querySelector('input[id*="register-name"]');
+        const emailField = form.querySelector('input[type="email"]');
+        const passwordField = form.querySelector('input[type="password"]');
+        const name = nameField.value.trim();
+        const email = emailField.value.trim();
+        const password = passwordField.value;
 
         try {
             await fetchAPI('auth.php', {
@@ -432,7 +548,7 @@ document.addEventListener('submit', async (event) => {
                 silent: true
             });
 
-            document.getElementById('register-form').reset();
+            form.reset();
             const loginTab = document.querySelector('[data-auth-tab="login"]');
             if (loginTab) {
                 loginTab.click();

@@ -3,8 +3,10 @@
   "short_name": "Voci",
   "start_url": "/index.html",
   "display": "standalone",
+  "orientation": "portrait-primary",
   "background_color": "#0f172a",
   "theme_color": "#4F46E5",
+  "scope": "/",
   "icons": [
     {
       "src": "icon.svg",
@@ -12,5 +14,6 @@
       "type": "image/svg+xml",
       "purpose": "any"
     }
-  ]
+  ],
+  "prefer_related_applications": false
 }

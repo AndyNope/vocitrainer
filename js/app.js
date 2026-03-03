@@ -1661,9 +1661,25 @@ if ('serviceWorker' in navigator) {
     });
 }
 
+// Debug viewport on mobile PWA
+function debugViewport() {
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+        console.log('PWA Mode - Viewport:', {
+            innerWidth: window.innerWidth,
+            innerHeight: window.innerHeight,
+            devicePixelRatio: window.devicePixelRatio,
+            orientation: window.screen.orientation?.type || 'unknown'
+        });
+    }
+}
+
 // Start app when DOM is ready
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
+    document.addEventListener('DOMContentLoaded', () => {
+        debugViewport();
+        init();
+    });
 } else {
+    debugViewport();
     init();
 }

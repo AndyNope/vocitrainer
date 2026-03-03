@@ -16,6 +16,26 @@
 
 html {
     scroll-behavior: smooth;
+    /* Prevent horizontal scroll on mobile */
+    overflow-x: hidden;
+    width: 100%;
+}
+
+body {
+    /* Ensure proper mobile scaling */
+    min-width: 320px;
+    overflow-x: hidden;
+    width: 100%;
+    -webkit-text-size-adjust: 100%;
+}
+
+/* PWA specific fixes for mobile */
+@media (display-mode: standalone) {
+    body {
+        /* Add safe area insets for notched devices */
+        padding-top: env(safe-area-inset-top);
+        padding-bottom: env(safe-area-inset-bottom);
+    }
 }
 
 * {

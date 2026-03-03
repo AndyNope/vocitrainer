@@ -1531,7 +1531,6 @@ async function init() {
         const user = await loadCurrentUser();
         if (user) {
             await loadAppData();
-            showToast(t('appReady'), 'success');
         }
     } catch (error) {
         console.error('Initialization error:', error);
@@ -1638,20 +1637,9 @@ const installBtnMobileWrapper = document.getElementById('install-btn-mobile-wrap
 const installBtnHero = document.getElementById('install-btn-hero');
 const installBtnFloating = document.getElementById('install-btn-floating');
 
-// Check if running as installed PWA
-function isInstalledPWA() {
-    return window.matchMedia('(display-mode: standalone)').matches || 
-           window.navigator.standalone === true;
-}
-
 // Detect iOS
 function isIOS() {
     return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-}
-
-// Hide floating button if already installed
-if (isInstalledPWA() && installBtnFloating) {
-    installBtnFloating.style.display = 'none';
 }
 
 window.addEventListener('beforeinstallprompt', (event) => {

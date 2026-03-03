@@ -276,8 +276,8 @@
     </div>
 
     <div id="app-shell" style="display: none;">
-        <!-- Floating Install Button (Mobile) -->
-        <button id="install-btn-floating" class="btn btn-primary btn-circle btn-lg fixed bottom-6 right-6 z-50 shadow-2xl md:hidden" style="display: none;" title="App installieren">
+        <!-- Floating Install Button (Mobile) - Always visible -->
+        <button id="install-btn-floating" class="btn btn-primary btn-circle btn-lg fixed bottom-6 right-6 z-50 shadow-2xl md:hidden" title="App installieren">
             <i class="fa-solid fa-download text-xl"></i>
         </button>
 
@@ -684,6 +684,53 @@
             <div class="modal-action">
                 <button id="copy-share-link" class="btn btn-secondary">Kopieren</button>
                 <button id="toggle-community" class="btn btn-accent">Speichern</button>
+            </div>
+        </div>
+    </dialog>
+
+    <dialog id="install-help-modal" class="modal">
+        <div class="modal-box">
+            <form method="dialog">
+                <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+            </form>
+            <h3 class="font-bold text-lg mb-4">
+                <i class="fa-solid fa-mobile-screen-button text-primary"></i>
+                App installieren
+            </h3>
+            
+            <!-- iOS Instructions -->
+            <div id="install-ios-instructions" style="display: none;">
+                <p class="mb-4">So installierst du die App auf deinem iPhone/iPad:</p>
+                <ol class="list-decimal list-inside space-y-2 text-sm">
+                    <li>Tippe unten auf den <strong>Share-Button</strong> <i class="fa-solid fa-share"></i></li>
+                    <li>Scrolle nach unten bis zu <strong>"Zum Home-Bildschirm"</strong></li>
+                    <li>Tippe auf <strong>"Hinzufügen"</strong></li>
+                    <li>Die App erscheint auf deinem Home-Bildschirm!</li>
+                </ol>
+                <div class="alert alert-info mt-4">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <span>Nutze Safari für die Installation</span>
+                </div>
+            </div>
+            
+            <!-- Android/Chrome Instructions -->
+            <div id="install-android-instructions" style="display: none;">
+                <p class="mb-4">Installation wird vom Browser derzeit blockiert.</p>
+                <p class="text-sm text-base-content/70 mb-4">Dies kann passieren wenn:</p>
+                <ul class="list-disc list-inside space-y-1 text-sm text-base-content/70">
+                    <li>Die App kürzlich deinstalliert wurde (3+ Monate Wartezeit)</li>
+                    <li>Der Browser die Installation blockiert hat</li>
+                </ul>
+                <div class="alert alert-warning mt-4">
+                    <i class="fa-solid fa-clock"></i>
+                    <span>Versuche es später erneut oder nutze das Browser-Menü (⋮ → "Zum Startbildschirm hinzufügen")</span>
+                </div>
+            </div>
+            
+            <div class="modal-action">
+                <form method="dialog">
+                    <button class="btn btn-primary">Verstanden</button>
+                </form>
             </div>
         </div>
     </dialog>

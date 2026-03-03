@@ -1638,11 +1638,27 @@ const installBtnMobileWrapper = document.getElementById('install-btn-mobile-wrap
 const installBtnHero = document.getElementById('install-btn-hero');
 const installBtnFloating = document.getElementById('install-btn-floating');
 
+// Check if running as installed PWA
+function isInstalledPWA() {
+    return window.matchMedia('(display-mode: standalone)').matches || 
+           window.navigator.standalone === true;
+}
+
+// Detect iOS
+function isIOS() {
+    return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+}
+
+// Hide floating button if already installed
+if (isInstalledPWA() && installBtnFloating) {
+    installBtnFloating.style.display = 'none';
+}
+
 window.addEventListener('beforeinstallprompt', (event) => {
     event.preventDefault();
     deferredInstallPrompt = event;
     
-    // Show all install buttons (desktop, mobile, hero, floating)
+    // Show install buttons in header/menu when prompt is available
     if (installBtn) {
         installBtn.style.display = 'inline-flex';
     }
@@ -1652,36 +1668,44 @@ window.addEventListener('beforeinstallprompt', (event) => {
     if (installBtnHero) {
         installBtnHero.style.display = 'inline-flex';
     }
-    if (installBtnFloating) {
-        installBtnFloating.style.display = 'flex';
-    }
 });
 
 async function handleInstallClick() {
-    if (!deferredInstallPrompt) {
+    // If we have the prompt, use it
+    if (deferredInstallPrompt) {
+        deferredInstallPrompt.prompt();
+        const result = await deferredInstallPrompt.userChoice;
+        deferredInstallPrompt = null;
+        
+        if (result.outcome === 'accepted') {
+            // Hide all buttons after successful install
+            hideAllInstallButtons();
+            showToast(t('appReady'), 'success');
+        }
         return;
     }
-    deferredInstallPrompt.prompt();
-    const result = await deferredInstallPrompt.userChoice;
-    deferredInstallPrompt = null;
     
-    // Hide all buttons after install
-    if (installBtn) {
-        installBtn.style.display = 'none';
-    }
-    if (installBtnMobileWrapper) {
-        installBtnMobileWrapper.style.display = 'none';
-    }
-    if (installBtnHero) {
-        installBtnHero.style.display = 'none';
-    }
-    if (installBtnFloating) {
-        installBtnFloating.style.display = 'none';
+    // No prompt available - show help modal
+    const helpModal = document.getElementById('install-help-modal');
+    const iosInstructions = document.getElementById('install-ios-instructions');
+    const androidInstructions = document.getElementById('install-android-instructions');
+    
+    if (isIOS()) {
+        iosInstructions.style.display = 'block';
+        androidInstructions.style.display = 'none';
+    } else {
+        iosInstructions.style.display = 'none';
+        androidInstructions.style.display = 'block';
     }
     
-    if (result.outcome === 'accepted') {
-        showToast(t('appReady'), 'success');
-    }
+    helpModal.showModal();
+}
+
+function hideAllInstallButtons() {
+    if (installBtn) installBtn.style.display = 'none';
+    if (installBtnMobileWrapper) installBtnMobileWrapper.style.display = 'none';
+    if (installBtnHero) installBtnHero.style.display = 'none';
+    if (installBtnFloating) installBtnFloating.style.display = 'none';
 }
 
 if (installBtn) {

@@ -650,8 +650,22 @@ document.getElementById('save-settings-btn').addEventListener('click', async () 
     });
     
     state.mainLanguage = language.name;
-    showToast('Einstellungen gespeichert!', 'success');
+    showToast(t('setUpdated'), 'success');
 });
+
+// App Language Selector
+document.getElementById('app-language').addEventListener('change', (e) => {
+    setLanguage(e.target.value);
+    showToast(t('appReady'), 'success');
+});
+
+// Initialize app language selector
+function initLanguageSelector() {
+    const appLangSelect = document.getElementById('app-language');
+    if (appLangSelect) {
+        appLangSelect.value = getCurrentLanguage();
+    }
+}
 
 // =========================
 // Set Management
@@ -1488,11 +1502,16 @@ async function loadAppData() {
     await loadSettings();
     await loadLanguages();
     await loadSets();
+    initLanguageSelector();
+    updateUITexts();
     showView('home-view');
 }
 
 async function init() {
     try {
+        // Initialize UI language
+        updateUITexts();
+        
         // Check if this is a share link first
         const params = new URLSearchParams(window.location.search);
         const shareToken = params.get('share');
@@ -1512,13 +1531,13 @@ async function init() {
         const user = await loadCurrentUser();
         if (user) {
             await loadAppData();
-            showToast('App bereit!', 'success');
+            showToast(t('appReady'), 'success');
         }
     } catch (error) {
         console.error('Initialization error:', error);
         // Don't show error toast if it's just a missing auth
         if (error.message !== 'API-Fehler') {
-            showToast('Fehler beim Laden der Daten', 'error');
+            showToast(t('errorLoading'), 'error');
         }
     }
 }

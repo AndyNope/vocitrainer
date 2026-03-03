@@ -21,6 +21,7 @@
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
     <link rel="stylesheet" href="css/style.css">
+    <script src="js/i18n.js"></script>
 </head>
 <body class="bg-base-200 text-base-content">
     <!-- Auth View -->
@@ -280,20 +281,20 @@
                                 <i class="fa-solid fa-bars"></i>
                             </label>
                             <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-                                <li><button class="nav-btn" data-view="home">Meine Sets</button></li>
-                                <li><button class="nav-btn" data-view="community">Community</button></li>
-                                <li><button class="nav-btn" data-view="settings">Einstellungen</button></li>
+                                <li><button class="nav-btn" data-view="home" data-i18n="mySets">Meine Sets</button></li>
+                                <li><button class="nav-btn" data-view="community" data-i18n="community">Community</button></li>
+                                <li><button class="nav-btn" data-view="settings" data-i18n="settings">Einstellungen</button></li>
                                 <li id="install-btn-mobile-wrapper" style="display: none;">
                                     <button class="btn btn-secondary btn-sm w-full" id="install-btn-mobile">
                                         <i class="fa-solid fa-download"></i>
-                                        App installieren
+                                        <span data-i18n="installApp">App installieren</span>
                                     </button>
                                 </li>
                                 <li class="mt-2">
                                     <span class="text-xs opacity-70" id="user-name-mobile"></span>
                                 </li>
                                 <li>
-                                    <button class="btn btn-outline btn-primary" id="logout-btn-mobile" data-action="logout" type="button">Abmelden</button>
+                                    <button class="btn btn-outline btn-primary" id="logout-btn-mobile" data-action="logout" type="button" data-i18n="logout">Abmelden</button>
                                 </li>
                             </ul>
                         </div>
@@ -304,15 +305,15 @@
                     </div>
                     <div class="navbar-center hidden md:flex">
                         <div class="tabs tabs-boxed header-tabs">
-                            <button class="tab tab-active nav-btn active" data-view="home">Meine Sets</button>
-                            <button class="tab nav-btn" data-view="community">Community</button>
-                            <button class="tab nav-btn" data-view="settings">Einstellungen</button>
+                            <button class="tab tab-active nav-btn active" data-view="home" data-i18n="mySets">Meine Sets</button>
+                            <button class="tab nav-btn" data-view="community" data-i18n="community">Community</button>
+                            <button class="tab nav-btn" data-view="settings" data-i18n="settings">Einstellungen</button>
                         </div>
                     </div>
                     <div class="navbar-end hidden md:flex gap-3 px-4 header-actions">
-                        <button class="btn btn-secondary btn-sm" id="install-btn" style="display: none;">App installieren</button>
+                        <button class="btn btn-secondary btn-sm" id="install-btn" style="display: none;" data-i18n="installApp">App installieren</button>
                         <span id="user-name" class="font-semibold"></span>
-                        <button class="btn btn-outline btn-primary" id="logout-btn" data-action="logout" type="button">Abmelden</button>
+                        <button class="btn btn-outline btn-primary" id="logout-btn" data-action="logout" type="button" data-i18n="logout">Abmelden</button>
                     </div>
                 </div>
             </div>
@@ -322,9 +323,9 @@
             <div class="container mx-auto px-4">
                 <div id="home-view" class="view active">
                     <div class="view-header flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                        <h2 class="text-3xl font-bold">Meine Voci-Sets</h2>
+                        <h2 class="text-3xl font-bold" data-i18n="myVocabSets">Meine Voci-Sets</h2>
                         <button class="btn btn-primary" id="create-set-btn">
-                            <i class="fa-solid fa-plus"></i> Neues Set erstellen
+                            <i class="fa-solid fa-plus"></i> <span data-i18n="createNewSet">Neues Set erstellen</span>
                         </button>
                     </div>
                     
@@ -335,20 +336,32 @@
 
                 <div id="settings-view" class="view">
                     <div class="view-header">
-                        <h2 class="text-3xl font-bold">Einstellungen</h2>
+                        <h2 class="text-3xl font-bold" data-i18n="settingsTitle">Einstellungen</h2>
                     </div>
                     
-                    <div class="card bg-base-100 shadow">
+                    <div class="card bg-base-100 shadow mb-6">
                         <div class="card-body">
+                            <h3 class="card-title mb-4" data-i18n="mainLanguage">Hauptsprache</h3>
+                            <p class="text-sm text-base-content/70 mb-4" data-i18n="mainLanguageDesc">Die Sprache, die du lernen möchtest</p>
                             <div class="form-control">
-                                <label class="label" for="main-language">
-                                    <span class="label-text">Hauptsprache</span>
-                                </label>
                                 <select id="main-language" class="select select-bordered w-full">
                                     <!-- Sprachen werden dynamisch geladen -->
                                 </select>
                             </div>
-                            <button class="btn btn-primary mt-4" id="save-settings-btn">Speichern</button>
+                            <button class="btn btn-primary mt-4" id="save-settings-btn" data-i18n="save">Speichern</button>
+                        </div>
+                    </div>
+
+                    <div class="card bg-base-100 shadow">
+                        <div class="card-body">
+                            <h3 class="card-title mb-4" data-i18n="appLanguage">App-Sprache</h3>
+                            <p class="text-sm text-base-content/70 mb-4" data-i18n="appLanguageDesc">Sprache der Benutzeroberfläche</p>
+                            <div class="form-control">
+                                <select id="app-language" class="select select-bordered w-full">
+                                    <option value="de">Deutsch</option>
+                                    <option value="en">English</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>

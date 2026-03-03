@@ -30,14 +30,30 @@ const state = {
 function showToast(message, type = 'info') {
     const container = document.getElementById('toast-container');
     const toast = document.createElement('div');
-    const variant = type === 'success' ? 'alert-success' : type === 'error' ? 'alert-error' : 'alert-info';
-    toast.className = `alert ${variant} shadow-lg`;
-    toast.innerHTML = `<span>${message}</span>`;
+    
+    // DaisyUI alert classes
+    const alertClass = type === 'success' ? 'alert-success' : 
+                       type === 'error' ? 'alert-error' : 
+                       'alert-info';
+    
+    toast.className = `alert ${alertClass} shadow-lg mb-2`;
+    
+    // Add icon based on type
+    const icon = type === 'success' ? '<i class="fa-solid fa-circle-check"></i>' :
+                 type === 'error' ? '<i class="fa-solid fa-circle-exclamation"></i>' :
+                 '<i class="fa-solid fa-circle-info"></i>';
+    
+    toast.innerHTML = `
+        ${icon}
+        <span class="text-sm md:text-base">${message}</span>
+    `;
 
     container.appendChild(toast);
 
     setTimeout(() => {
-        toast.classList.add('opacity-0');
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateX(100%)';
+        toast.style.transition = 'all 0.3s ease';
         setTimeout(() => toast.remove(), 300);
     }, 3000);
 }
